@@ -2,24 +2,17 @@
 // http://localhost:3000/isolated/exercise/02.js
 
 import * as React from 'react'
-import {createReturn} from 'typescript'
 
 function Greeting({initialName = ''}) {
-  // 🐨 initialize the state to the value from localStorage
-  // 💰 window.localStorage.getItem('name') ?? initialName
-  // function getInitialName() {
-  //  return   window.localStorage.getItem('name') || initialName
-  // }
+  console.log('render')
   const [name, setName] = React.useState(
     () => window.localStorage.getItem('name') || initialName,
   )
 
-  // 🐨 Here's where you'll use `React.useEffect`.
-  // The callback should set the `name` in localStorage.
-  // 💰 window.localStorage.setItem('name', name)
   React.useEffect(() => {
+    console.log('calling the useEffect')
     window.localStorage.setItem('name', name)
-  })
+  }, [name])
 
   function handleChange(event) {
     setName(event.target.value)
@@ -36,7 +29,17 @@ function Greeting({initialName = ''}) {
 }
 
 function App() {
-  return <Greeting initialName="Rosada" />
+  const [count, setCount] = React.useState(0)
+  return (
+    <>
+      <button onClick={() => setCount(previousCount => previousCount + 1)}>
+        {' '}
+        {count}
+      </button>
+
+      <Greeting initialName="Rosada" />
+    </>
+  )
 }
 
 export default App
