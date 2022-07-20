@@ -1,23 +1,21 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-// useEffect: persistent state
 // http://localhost:3000/isolated/exercise/02.js
 
 import * as React from 'react'
 
-function syncLocalStore(initialName) {
-  const [name, setName] = React.useState(
-    () => window.localStorage.getItem('name') || initialName,
+function useLocalStoreWithState(key, defaultValue = '') {
+  const [state, setState] = React.useState(
+    () => window.localStorage.getItem(key) || defaultValue,
   )
 
   React.useEffect(() => {
-    window.localStorage.setItem('name', name)
-  }, [name])
+    window.localStorage.setItem(key, state)
+  }, [key, state])
 
-  return [name, setName]
+  return [state, setState]
 }
 
 function Greeting({initialName = ''}) {
-  const [name, setName] = syncLocalStore(initialName)
+  const [name, setName] = useLocalStoreWithState('name', initialName)
   function handleChange(event) {
     setName(event.target.value)
   }
